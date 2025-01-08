@@ -160,10 +160,7 @@ int bitXor(int x, int y) {
  */
 int tmin(void) {
   int a1 = (1 << 31); // 0x7ffff;
-  int a2 = ~0; // 0xfffff;
-  int a3 = (~a1)&a2;
   return a1;
-
 }
 //2
 /*
@@ -174,7 +171,10 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return 2;
+  int mx = ~(1 << 31);
+  int a1 = !((~x) & mx);
+  int a2 = !(!(x + 1));
+  return a1&a2;
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -185,7 +185,15 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+  // all even 1
+  int a1 = (0x55 << 24) | (0x55 << 16) | (0x55 << 8) | 0x55;
+  // all odd 1
+  int a2 = ~a1;
+  int a3 = x&a2; // 0b10110
+  int a4 = ~a3; //  0b01001
+  int a5 = a1&a4;
+  int a6 = a4 + (~a5) + 1;
+  return !a6;
 }
 /* 
  * negate - return -x 
@@ -195,7 +203,7 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  return (~x)+1;
 }
 //3
 /* 
@@ -208,7 +216,12 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return 2;
+  int a1 = !((x&(~0xf)) + (~0x30) + 1);
+  int a2 = ((x&0xf));
+  a2 = 0x9+ (~a2) + 1;
+  int a3 = a2&(1<<31);
+  int a4 = !a3;
+  return a1&a4;
 }
 /* 
  * conditional - same as x ? y : z 
@@ -218,8 +231,14 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+  int x_not_zero = !!x;
+  int x_zero = !x_not_zero;
+  int fi = (x_not_zero << 31);
+  fi = fi >> 31;
+  int se = ~fi;
+  return (y&fi)|(z&se);
 }
+
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
  *   Example: isLessOrEqual(4,5) = 1.
@@ -228,7 +247,14 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+  int diff = x + (~y) + 1;
+  int sign = (diff >> 31)&0x1;
+  int x_sign = (x >> 31)&0x1;
+  int y_sign = (y >> 31)&0x1;
+  int zero = !(x^y);
+  int sign_not_equal = x_sign^y_sign;
+  int sign_equal = !sign_not_equal;
+  return (sign_not_equal&(x_sign)) + ((sign_equal)&((sign) | zero));
 }
 //4
 /* 
@@ -240,7 +266,10 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-  return 2;
+  int r_x = x^((~x) + 1);
+  int x_sign = (x >> 31)&0x1;
+  int r_x_sign = (r_x >> 31)&0x1;
+  return (x_sign^0x1)&((x_sign^r_x_sign)^0x1);
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
