@@ -122,6 +122,7 @@ int main(int argc, char *argv[])
     /* This phase will never be used, since no one will get past the
      * earlier ones.  But just in case, make this one extra hard. */
     input = read_line();
+    // 4 3 2 1 6 5
     phase_6(input);
     phase_defused();
 
