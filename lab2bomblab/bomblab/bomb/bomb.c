@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
     /* The second phase is harder.  No one will ever figure out
      * how to defuse this... */
     input = read_line();
+    // 1 2 4 8 16 32
     phase_2(input);
     phase_defused();
     printf("That's number 2.  Keep going!\n");
@@ -88,18 +89,32 @@ int main(int argc, char *argv[])
     /* I guess this is too easy so far.  Some more complex code will
      * confuse people. */
     input = read_line();
+    // tow numbers
+    // 1st switch address, 2ed 
+    // 0x402470:       0x0000000000400f7c      0x0000000000400fb9
+    // 0x402480:       0x0000000000400f83      0x0000000000400f8a
+    // 0x402490:       0x0000000000400f91      0x0000000000400f98
+    // 0x4024a0:       0x0000000000400f9f      0x0000000000400fa6
+
     phase_3(input);
+    // 0 207
+    // 1 311
+    // ... 
     phase_defused();
     printf("Halfway there!\n");
 
     /* Oh yeah?  Well, how good is your math?  Try on this saucy problem! */
     input = read_line();
+    // two numbers
+    // 7 0
     phase_4(input);
     phase_defused();
     printf("So you got that one.  Try this one.\n");
     
     /* Round and 'round in memory we go, where we stop, the bomb blows! */
     input = read_line();
+    // input length = 6
+    // 9?>567
     phase_5(input);
     phase_defused();
     printf("Good work!  On to the next...\n");
